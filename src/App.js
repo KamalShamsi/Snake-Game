@@ -37,8 +37,30 @@ const App = () => {
   }  
 
   const moveSnake = () => {
-    //move logic here
+    let dots = [...snakeDots];
+    let head = dots[dots.length - 1];
+  
+    switch (direction) {
+      case 'RIGHT':
+        head = [head[0] + 2, head[1]];
+        break;
+      case 'LEFT':
+        head = [head[0] - 2, head[1]];
+        break;
+      case 'DOWN':
+        head = [head[0], head[1] + 2];
+        break;
+      case 'UP':
+        head = [head[0], head[1] - 2];
+        break;
+      default:
+        break;
+    }
+    dots.push(head);
+    dots.shift();
+    setSnakeDots(dots);
   }
+  
 
   const checkIfOutOfBorders = () => {
     //border checking logic here
