@@ -18,8 +18,23 @@ const App = () => {
   }, [snakeDots]);
 
   const handleKeyDown = (e) => {
-    //keydown logic here
-  }
+    switch(e.key) {
+      case 'ArrowUp': 
+        setDirection({ changeX: 0, changeY: -1 }); 
+        break;
+      case 'ArrowDown': 
+        setDirection({ changeX: 0, changeY: 1 }); 
+        break;
+      case 'ArrowLeft': 
+        setDirection({ changeX: -1, changeY: 0 }); 
+        break;
+      case 'ArrowRight': 
+        setDirection({ changeX: 1, changeY: 0 }); 
+        break;
+      default:
+        break;
+    }
+  }  
 
   const moveSnake = () => {
     //move logic here
