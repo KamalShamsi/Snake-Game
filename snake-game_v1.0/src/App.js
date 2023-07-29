@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './styles/App.css';
 import GameBoard from './components/GameBoard';
+import Score from './components/Score';
 
 function App() {
   const [snakeDots, setSnakeDots] = useState([[0,0], [2,0]]);
   const [foodDot, setFoodDot] = useState([0, 0]);
   const [direction, setDirection] = useState('RIGHT');
+  const [score, setScore] = useState(0); 
 
   useEffect(() => {
     const interval = setInterval(moveSnake, 200);
@@ -57,6 +59,7 @@ function App() {
     dots.push(head);
     if (head[0] === foodDot[0] && head[1] === foodDot[1]) {
       generateFood();
+      setScore(score => score + 1); 
     } else {
       dots.shift();
     }
@@ -88,11 +91,13 @@ function App() {
   const gameOver = () => {
     setSnakeDots([[0, 0]]);
     setDirection('RIGHT');
+    setScore(0); 
   };
 
   return (
     <div className="App">
       <h1>Snake Game</h1>
+      <Score score={score} />
       <GameBoard snakeDots={snakeDots} foodDot={foodDot} />
     </div>
   );
