@@ -13,13 +13,14 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [speed, setSpeed] = useState(200);
+  const [paused, setPaused] = useState(false); // states
 
   useEffect(() => {
-    if (gameStarted && !gameOver) {
+    if (gameStarted && !gameOver && !paused) { //conditions
       const interval = setInterval(moveSnake, speed);
       return () => clearInterval(interval);
     }
-  }, [snakeDots, gameStarted, gameOver, speed]);
+  }, [snakeDots, gameStarted, gameOver, paused, speed]); // dependencies
 
   useEffect(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -100,11 +101,11 @@ function App() {
     setSnakeDots([[0, 0]]);
     setDirection('RIGHT');
     setGameOver(true);
-    setSpeed(200); // Reset speed
+    setSpeed(200);
   };
 
   const increaseSpeed = () => {
-    if (speed > 100) { // Ensure speed doesn't get too fast
+    if (speed > 100) {
       setSpeed(speed - 10);
     }
   };
@@ -114,6 +115,8 @@ function App() {
       <h1>Snake Game</h1>
       <Score score={score} />
       <GameBoard snakeDots={snakeDots} foodDot={foodDot} />
+      {/* pause/resume button */}
+      <button onClick={() => setPaused(!paused)}>{paused ? 'Resume' : 'Pause'}</button>
       <StartModal 
         isOpen={!gameStarted}
         onRequestClose={() => setGameStarted(true)}
