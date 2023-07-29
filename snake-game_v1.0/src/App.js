@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import './styles/App.css';
 import GameBoard from './components/GameBoard';
 import Score from './components/Score';
+import StartModal from './components/StartModal';
+import GameOverModal from './components/GameOverModal';
+import './styles/App.css';
 
 function App() {
   const [snakeDots, setSnakeDots] = useState([[0,0], [2,0]]);
   const [foodDot, setFoodDot] = useState([0, 0]);
   const [direction, setDirection] = useState('RIGHT');
-  const [score, setScore] = useState(0); 
+  const [score, setScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [speed, setSpeed] = useState(200);
 
   useEffect(() => {
-    const interval = setInterval(moveSnake, 200);
-    return () => clearInterval(interval);
-  }, [snakeDots]);
+    if (gameStarted && !gameOver) {
+      const interval = setInterval(moveSnake, speed);
+      return () => clearInterval(interval);
+    }
+  }, [snakeDots, gameStarted, gameOver, speed]);
 
   useEffect(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -59,13 +66,14 @@ function App() {
     dots.push(head);
     if (head[0] === foodDot[0] && head[1] === foodDot[1]) {
       generateFood();
-      setScore(score => score + 1); 
+      setScore(score + 1);
+      increaseSpeed();
     } else {
       dots.shift();
     }
 
     if (checkCollision(head)) {
-      gameOver();
+      onGameOver();
     } else {
       setSnakeDots(dots);
     }
@@ -88,10 +96,17 @@ function App() {
     return head[0] >= 100 || head[1] >= 100 || head[0] < 0 || head[1] < 0;
   };
 
-  const gameOver = () => {
+  const onGameOver = () => {
     setSnakeDots([[0, 0]]);
     setDirection('RIGHT');
-    setScore(0); 
+    setGameOver(true);
+    setSpeed(200); // Reset speed
+  };
+
+  const increaseSpeed = () => {
+    if (speed > 100) { // Ensure speed doesn't get too fast
+      setSpeed(speed - 10);
+    }
   };
 
   return (
@@ -99,6 +114,15 @@ function App() {
       <h1>Snake Game</h1>
       <Score score={score} />
       <GameBoard snakeDots={snakeDots} foodDot={foodDot} />
+      <StartModal 
+        isOpen={!gameStarted}
+        onRequestClose={() => setGameStarted(true)}
+      />
+      <GameOverModal
+        isOpen={gameOver}
+        onRequestClose={() => {setGameOver(false); setGameStarted(false); setScore(0);}}
+        score={score}
+      />
     </div>
   );
 }
