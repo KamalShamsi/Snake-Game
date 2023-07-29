@@ -1,2 +1,29 @@
-SnakeGame
-A simple, classic Snake game created using JavaScript. Control the snake to eat apples and grow bigger, while avoiding collisions with itself and the walls.
+# Snake Game
+
+## Description
+This is a classic snake game built using React and Material UI. The goal of the game is to control a snake that moves around the board, and eat as many pieces of food as possible. The game becomes more challenging as the snake gets longer with each piece of food it eats. The game ends if the snake hits the border or its own body.
+
+## Features
+- The game has three levels of difficulty: Easy, Medium, Hard.
+- The speed of the snake increases as it eats more food.
+- There is a pause/resume functionality which allows you to pause the game at any time and resume when ready.
+
+## Installation
+1. Clone the repository: `https://github.com/KamalShamsi/Snake-Game.git`
+2. Navigate into the directory: `cd snake-game_v1.0`
+3. Install the dependencies: `npm install`
+4. Start the project: `npm start`
+5. Open [http://localhost:3000]to view it in the browser.
+
+## Controls
+Use the arrow keys to control the snake:
+- Arrow Up: Move Up
+- Arrow Down: Move Down
+- Arrow Left: Move Left
+- Arrow Right: Move Right
+
+## Built With
+- React.js
+- Material UI
+
+Enjoy the game!
