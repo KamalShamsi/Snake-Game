@@ -13,7 +13,7 @@ This is a classic snake game built using React and Material UI. The goal of the 
 2. Navigate into the directory: `cd snake-game_v1.0`
 3. Install the dependencies: `npm install`
 4. Start the project: `npm start`
-5. Open [http://localhost:3000]to view it in the browser.
+5. Open 'http://localhost:3000' to view it in the browser.
 
 ## Controls
 Use the arrow keys to control the snake:
