@@ -3,7 +3,6 @@ import GameBoard from './components/GameBoard';
 import Score from './components/Score';
 import StartModal from './components/StartModal';
 import GameOverModal from './components/GameOverModal';
-import Background from './components/Background';
 import DifficultySelector from './components/DifficultySelector';
 import PauseResumeButton from './components/PauseResumeButton';
 import './styles/App.css';
@@ -142,7 +141,6 @@ function App() {
         onRequestClose={() => {setGameOver(false); setGameStarted(false); setScore(0);}}
         score={score}
       />
-      <Background/>
     </div>
   );
 }

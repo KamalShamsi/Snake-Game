@@ -5,7 +5,7 @@
   justify-content: center;
   height: 100vh;
   background-color: #282c34;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .game-board {
