@@ -1,31 +1,27 @@
 import React from 'react';
-import Modal from 'react-modal';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
-Modal.setAppElement('#root')
-
-function StartModal({isOpen, onRequestClose}) {
+function StartModal({ isOpen, onRequestClose }) {
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      style={customStyles}
-      contentLabel="Start Modal"
-    >
-      <h2>Hello</h2>
-      <p>Welcome to the Snake Game! Use your arrow keys to move the snake. Don't run into the wall or your own tail! Eat the red food to grow bigger. Enjoy!</p>
-      <button onClick={onRequestClose}>Start Game</button>
-    </Modal>
+    <Dialog open={isOpen} onClose={onRequestClose}>
+      <DialogTitle>Welcome to the Snake Game</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Use your arrow keys to move the snake. Eat food, grow in length, and try to avoid colliding with the border and yourself. 
+          When ready, click on the "Start Game" button. Enjoy!
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button color="primary" onClick={onRequestClose}>
+          Start Game
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 

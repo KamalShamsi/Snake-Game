@@ -1,31 +1,27 @@
 import React from 'react';
-import Modal from 'react-modal';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
-Modal.setAppElement('#root')
-
-function GameOverModal({isOpen, onRequestClose, score}) {
+function GameOverModal({ isOpen, onRequestClose, score }) {
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      style={customStyles}
-      contentLabel="Game Over Modal"
-    >
-      <h2>Game Over</h2>
-      <p>Your score was: {score}</p>
-      <button onClick={onRequestClose}>Play Again</button>
-    </Modal>
+    <Dialog open={isOpen} onClose={onRequestClose}>
+      <DialogTitle>Game Over</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          You finished the game with a score of {score}. 
+          If you want to play again, press the "Restart" button.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button color="secondary" onClick={onRequestClose}>
+          Restart
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 
