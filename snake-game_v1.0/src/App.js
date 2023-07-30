@@ -7,6 +7,12 @@ import DifficultySelector from './components/DifficultySelector';
 import PauseResumeButton from './components/PauseResumeButton';
 import './styles/App.css';
 
+const DIFFICULTIES = {
+  easy: 200,
+  medium: 100,
+  hard: 50,
+};
+
 function App() {
   const [snakeDots, setSnakeDots] = useState([[0,0], [2,0]]);
   const [foodDot, setFoodDot] = useState([0, 0]);
@@ -14,15 +20,16 @@ function App() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [difficulty, setDifficulty] = useState('easy');
+  const [speed, setSpeed] = useState(DIFFICULTIES[difficulty]);
   const [isPaused, setIsPaused] = useState(false);
-  const [speed, setSpeed] = useState(200);
 
   useEffect(() => {
     if (gameStarted && !gameOver && !isPaused) {
       const interval = setInterval(moveSnake, speed);
       return () => clearInterval(interval);
     }
-  }, [snakeDots, gameStarted, gameOver, isPaused, speed]);
+  }, [snakeDots, gameStarted, gameOver, speed, isPaused]);
 
   useEffect(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -70,6 +77,7 @@ function App() {
     if (head[0] === foodDot[0] && head[1] === foodDot[1]) {
       generateFood();
       setScore(score + 1);
+      increaseSpeed();
     } else {
       dots.shift();
     }
@@ -102,45 +110,40 @@ function App() {
     setSnakeDots([[0, 0]]);
     setDirection('RIGHT');
     setGameOver(true);
-    setSpeed(200); // Reset speed
+    setSpeed(DIFFICULTIES[difficulty]); // Reset speed
   };
 
-  const togglePause = () => {
+  const increaseSpeed = () => {
+    if (speed > DIFFICULTIES.hard) { // Ensure speed doesn't get too fast
+      setSpeed(speed - 10);
+    }
+  };
+
+  const onSelectDifficulty = (selectedDifficulty) => {
+    setDifficulty(selectedDifficulty);
+    setSpeed(DIFFICULTIES[selectedDifficulty]);
+  }
+
+  const onGameOverModalClose = () => {
+    setGameOver(false);
+    setGameStarted(false);
+    setScore(0);
+    setSpeed(DIFFICULTIES[difficulty]);
+  };
+
+  const onPauseResume = () => {
     setIsPaused(!isPaused);
   };
-
-  const onSelectDifficulty = (difficulty) => {
-    switch(difficulty) {
-      case 'easy':
-        setSpeed(200);
-        break;
-      case 'medium':
-        setSpeed(150);
-        break;
-      case 'hard':
-        setSpeed(100);
-        break;
-      default:
-        setSpeed(200);
-    }
-  }
 
   return (
     <div className="App">
       <h1>Snake Game</h1>
-      <DifficultySelector onSelectDifficulty={onSelectDifficulty} />
       <Score score={score} />
+      <DifficultySelector onSelectDifficulty={onSelectDifficulty} />
+      <PauseResumeButton onPauseResume={onPauseResume} isPaused={isPaused} />
       <GameBoard snakeDots={snakeDots} foodDot={foodDot} />
-      <PauseResumeButton onClick={togglePause} isPaused={isPaused} />
-      <StartModal 
-        isOpen={!gameStarted}
-        onRequestClose={() => setGameStarted(true)}
-      />
-      <GameOverModal
-        isOpen={gameOver}
-        onRequestClose={() => {setGameOver(false); setGameStarted(false); setScore(0);}}
-        score={score}
-      />
+      <StartModal isOpen={!gameStarted} onRequestClose={() => setGameStarted(true)} />
+      <GameOverModal isOpen={gameOver} onRequestClose={onGameOverModalClose} score={score} />
     </div>
   );
 }
